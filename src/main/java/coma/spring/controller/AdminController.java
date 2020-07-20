@@ -110,20 +110,25 @@ public class AdminController {
 	@RequestMapping("toAdmin_member")
 	public ModelAndView toAdmin_member(HttpServletRequest request)  throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("admin/admin_member");
-
-		int cpage=1;
-		try {
-			cpage = Integer.parseInt(request.getParameter("cpage"));
-		}catch(Exception e) {
-
+		boolean adminCheck = this.adminCheck();
+		if(adminCheck) { // 어드민 계정이 맞으면
+			mav.setViewName("admin/admin_member");
+	
+			int cpage=1;
+			try {
+				cpage = Integer.parseInt(request.getParameter("cpage"));
+			}catch(Exception e) {
+	
+			}
+	
+			List<MemberDTO> mlist = aservice.memberList(cpage);
+			String navi = aservice.getMemberPageNav(cpage);
+	
+			mav.addObject("mlist", mlist);
+			mav.addObject("navi", navi);
+		}else {
+			mav.setViewName("error/adminpermission");
 		}
-
-		List<MemberDTO> mlist = aservice.memberList(cpage);
-		String navi = aservice.getMemberPageNav(cpage);
-
-		mav.addObject("mlist", mlist);
-		mav.addObject("navi", navi);
 		return mav;
 	}
 
@@ -501,7 +506,12 @@ public class AdminController {
 	//공지 쪽지
 	@RequestMapping("toAdmin_msg")
 	public String toAdmin_msg()throws Exception{
-		return "/admin/admin_msg";
+		boolean adminCheck = this.adminCheck();
+		if(adminCheck) { // 어드민 계정이 맞으면
+			return "/admin/admin_msg";
+		}else {
+			return "/error/adminpermission";
+		}
 	}
 	@RequestMapping("msgNotice")
 	public String msgNotice(HttpServletRequest request,MsgDTO msgdto)throws Exception{
