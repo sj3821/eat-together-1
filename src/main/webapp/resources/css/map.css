@@ -304,7 +304,7 @@
     .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
     #centerAddr {display:block;margin-top:2px;font-weight: normal;}
     .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-    .badge-light{background-color:#ff9900;color:white;}
+    .modal-body .badge-light{background-color:#ff9900;color:white;}
     #partyModal tbody tr:first-child th{padding-top:0px; padding-bottom:0px;font-size:10pt;}
     #partyModal tbody tr:first-child td{padding:0px;font-size:10pt;}
     #partyModal table td{border:0px;}
