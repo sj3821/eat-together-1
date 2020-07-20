@@ -253,50 +253,70 @@ public class AdminController {
 	@RequestMapping("partyByOption")
 	public ModelAndView partyByOption(HttpServletRequest request)throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/admin/admin_party");
-		Object option;
-
-		if(request.getParameter("option")!=null) {
-			option = request.getParameter("option");
-			session.setAttribute("option", option);
+		boolean adminCheck = this.adminCheck();
+		if(adminCheck) { // 어드민 계정이 맞으면
+			mav.setViewName("admin/admin_party");
+			Object option;
+	
+			if(request.getParameter("option")!=null) {
+				option = request.getParameter("option");
+				session.setAttribute("option", option);
+			}else {
+				option = session.getAttribute("option");
+			}
+			int cpage=1;
+			try {
+				cpage = Integer.parseInt(request.getParameter("cpage"));
+			}catch(Exception e) {
+	
+			}
+			List<PartyDTO> list = aservice.partyByOption(cpage, option);
+			String navi = aservice.getSelectPartyPageNav(cpage, option);
+	
+			mav.addObject("list", list);
+			mav.addObject("navi", navi);
+			System.out.println(option + "검색성공");
 		}else {
-			option = session.getAttribute("option");
+			mav.setViewName("error/adminpermission");
 		}
-		int cpage=1;
-		try {
-			cpage = Integer.parseInt(request.getParameter("cpage"));
-		}catch(Exception e) {
-
-		}
-		List<PartyDTO> list = aservice.partyByOption(cpage, option);
-		String navi = aservice.getSelectPartyPageNav(cpage, option);
-
-		mav.addObject("list", list);
-		mav.addObject("navi", navi);
-		System.out.println(option + "검색성공");
 		return mav;
+	}
+	public boolean adminCheck() throws Exception{
+		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginInfo");
+		String adminCheck = loginInfo.getId();
+		boolean adminpermission = false;
+		if(adminCheck.contentEquals("administrator")) {
+			adminpermission = true;
+		}
+		return adminpermission;
 	}
 
 	@RequestMapping("sortReview") // 예지 : 리뷰 검색
 	public ModelAndView sortReview(HttpServletRequest request) throws Exception{
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("admin/admin_review");
-		Object option;
-		if(request.getParameter("option")!=null) {
-			option = request.getParameter("option");
-			session.setAttribute("option", option);
+		boolean adminCheck = this.adminCheck();
+		if(adminCheck) {
+			mav.setViewName("admin/admin_review");
+			Object option;
+			if(request.getParameter("option")!=null) {
+				option = request.getParameter("option");
+				session.setAttribute("option", option);
+			}else {
+				option = session.getAttribute("option");
+			}
+	
+			int cpage=1;
+			try {cpage = Integer.parseInt(request.getParameter("cpage"));}catch(Exception e) {}
+			List<ReviewDTO> rlist = rservice.selectByPageAndOption(cpage, option);
+			String navi = rservice.getPageNaviByOption(cpage, option);
+			mav.addObject("rlist", rlist);
+			mav.addObject("navi", navi);
+			System.out.println(option + "검색성공");
+			return mav;
 		}else {
-			option = session.getAttribute("option");
+			mav.setViewName("error/adminpermission");
+			return mav;
 		}
-
-		int cpage=1;
-		try {cpage = Integer.parseInt(request.getParameter("cpage"));}catch(Exception e) {}
-		List<ReviewDTO> rlist = rservice.selectByPageAndOption(cpage, option);
-		String navi = rservice.getPageNaviByOption(cpage, option);
-		mav.addObject("rlist", rlist);
-		mav.addObject("navi", navi);
-		System.out.println(option + "검색성공");
-		return mav;
 	}
 	@ResponseBody // 예지 리뷰 상세정보 Modal 
 	@RequestMapping(value="viewDetailReview",produces="application/json;charset=utf8")
