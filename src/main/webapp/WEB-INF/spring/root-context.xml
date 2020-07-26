@@ -19,7 +19,7 @@
          value="jdbc:oracle:thin:@eat-together.czzdaiahnw3g.ap-northeast-2.rds.amazonaws.com:1521:orcl" />
       <property name="username" value="eat_together" />
       <property name="password" value="eat_together" />
-      <property name="initialSize" value="5" />
+      <property name="initialSize" value="50" />
    </bean>
 
    <bean id="sqlSessionFactory"
