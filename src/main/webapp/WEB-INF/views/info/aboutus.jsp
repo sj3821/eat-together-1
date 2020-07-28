@@ -154,7 +154,7 @@ body {
 						<div class="modal-dialog modal-dialog-centered modal-lg">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="staticBackdropLabel">이수지 :: 오만함을 모르는 겸손 개발자 자기 자신의 능력을 알아주세요</h5>
+									<h5 class="modal-title" id="staticBackdropLabel">이수지 :: 오만함을 모르는 겸손 개발자</h5>
 									<button type="button" class="close" data-dismiss="modal"
 										aria-label="Close">
 										<span aria-hidden="true">&times;</span>
