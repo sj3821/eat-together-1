@@ -20,7 +20,7 @@
       $(".input-area").empty();
 
 
-      var ws = new WebSocket("wss://eat-together.net/chat/chatroom")
+      var ws = new WebSocket("wss://eat-together.net/chat/chatroom");
       //var ws = new WebSocket("ws://192.168.0.8/chat/chatroom");
       
       this.send = function (message, callback) {
